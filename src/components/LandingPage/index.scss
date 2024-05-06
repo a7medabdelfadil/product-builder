@@ -12,11 +12,19 @@
 }
 
 .main .header {
+    padding:5px 20px !important;
     font-size: 50px !important;
     color: white;
     font-weight: 500 !important;
 }
 
 .main .span{
+    padding: 5px 20px !important;
     color: rgba(255, 255, 255, 0.597) ;
+}
+
+@media (width < 768px) {
+    .main .header {
+        font-size: 30px !important;
+    }
 }
