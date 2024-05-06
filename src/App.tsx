@@ -110,6 +110,13 @@ function App() {
     setProduct(defaultProductObj);
     setTempColors([]);
     closeModal();
+    toast("Product has been added successfully!", {
+      icon: "👏",
+      style: {
+        backgroundColor: "black",
+        color: "white",
+      },
+    });
   };
   const submitEditHandler = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
