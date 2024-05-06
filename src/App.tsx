@@ -256,7 +256,7 @@ function App() {
               ))}
             </div>
             <div className='flex items-center space-x-3'>
-              <Button className='bg-indigo-700 hover:bg-indigo-800 transition' onSubmit={submitEditHandler}>Submit</Button>
+              <Button className='bg-indigo-700 hover:bg-indigo-800 transition' type="submit" >Submit</Button>
               <Button className='bg-gray-300 hover:bg-gray-400 transition' onClick={onCancel} >Cancel</Button>
             </div>
           </form>
