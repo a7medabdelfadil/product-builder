@@ -1,0 +1,22 @@
+.main {
+    background-image: url(pexels-dreamypixel-552784.jpg);
+    background-size: cover;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(4px);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.main .header {
+    font-size: 50px !important;
+    color: white;
+    font-weight: 500 !important;
+}
+
+.main .span{
+    color: rgba(255, 255, 255, 0.597) ;
+}
