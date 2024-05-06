@@ -26,6 +26,7 @@ function App() {
   }
 
   // ** State **
+  const [testColor, setTestColor] = useState(1);
   const [products, setProducts] = useState<IProduct[]>(productList);
   const [product, setProduct] = useState<IProduct>(defaultProductObj);
   const [errors, setErrors] = useState({
@@ -35,11 +36,15 @@ function App() {
     price: '',
   });
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenEditModal, setIsOpenEditModal] = useState(false);
   const [tempColors, setTempColors] = useState<string[]>([]);
+  const [productToEdit, setProductToEdit] = useState<IProduct>(defaultProductObj);
 
   // ** Handler **
   const closeModal = () => setIsOpen(false);
   const openModal = () => setIsOpen(true);
+  const closeEditModal = () => setIsOpenEditModal(false);
+  const openEditModal = () => setIsOpenEditModal(true);
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setProduct({
@@ -55,6 +60,7 @@ function App() {
     setProduct(defaultProductObj);
     closeModal();
   }
+
   const submitEditHandler = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     const { title, description, price, imageURL } = product;
@@ -64,12 +70,13 @@ function App() {
       description,
       price,
       imageURL,
-
     });
 
-    const hasErrorMsg = Object.values(errors).every(value => value === "");
-    if (!hasErrorMsg) {
+    const hasErrorMsg =
+      Object.values(errors).some(value => value === "") && Object.values(errors).every(value => value === "") && !(tempColors.length === 0);
+    if (hasErrorMsg === false) {
       setErrors(errors);
+      setTestColor(0);
       return;
     }
     setProducts(prev => [{
@@ -87,7 +94,7 @@ function App() {
 
 
   // ** Render **
-  const renderProductList = products.map(product => <Card key={product.id} product={product} />)
+  const renderProductList = products.map(product => <Card key={product.id} product={product} setProductToEdit={setProductToEdit} openEditModal={openEditModal} />)
   const renderFormInputsList = formInputsList.map(input =>
     <div className='flex flex-col' key={input.id}>
       <label
@@ -114,7 +121,9 @@ function App() {
       setTempColors(
         (prev) => [...prev, color]
       )
-    }} />);
+      setTestColor(1);
+    }} />
+  );
 
   // ** return **
   return (
@@ -130,14 +139,45 @@ function App() {
         {renderProductList}
       </div >
 
+      {/* Add Product Modal */}
       <Modal isOpen={isOpen} closeModal={closeModal} title='ADD A NEW PRODUCT' >
         <form className='space-y-3' onSubmit={submitEditHandler} >
           {renderFormInputsList}
-          <Select selected={selectedCategory} setSelected={setSelectedCategory}/>
+          <Select selected={selectedCategory} setSelected={setSelectedCategory} />
 
           <div className='flex items-center my-4 space-x-1'>
             {renderProductColors}
           </div>
+          {testColor ? "" : <ErrorMsg msg="You must choose color" />}
+          <div className="flex items-center flex-wrap space-x-1">
+            {tempColors.map(color => (
+              <span
+                key={color}
+                className="p-1 mr-1 mb-1 text-xs rounded-md text-white"
+                style={{ backgroundColor: color }}
+              >
+                {color}
+              </span>
+            ))}
+          </div>
+          <div className='flex items-center space-x-3'>
+            <Button className='bg-indigo-700 hover:bg-indigo-800 transition' onSubmit={submitEditHandler}>Submit</Button>
+            <Button className='bg-gray-300 hover:bg-gray-400 transition' onClick={onCancel} >Cancel</Button>
+          </div>
+        </form>
+      </Modal>
+
+
+      {/* Edit Product Modal */}
+      <Modal isOpen={isOpenEditModal} closeModal={closeEditModal} title='EDIT PRODUCT' >
+        <form className='space-y-3' onSubmit={submitEditHandler} >
+          {renderFormInputsList}
+          <Select selected={selectedCategory} setSelected={setSelectedCategory} />
+
+          <div className='flex items-center my-4 space-x-1'>
+            {renderProductColors}
+          </div>
+          {testColor ? "" : <ErrorMsg msg="You must choose color" />}
           <div className="flex items-center flex-wrap space-x-1">
             {tempColors.map(color => (
               <span
