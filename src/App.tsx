@@ -13,7 +13,6 @@ import Select from './components/ui/Select';
 import { TProductNames } from "./types";
 import toast, { Toaster } from 'react-hot-toast';
 import LandingPage from "./components/LandingPage/LandingPage";
-import Footer from "./components/LandingPage/Footer/Footer";
 
 function App() {
 
